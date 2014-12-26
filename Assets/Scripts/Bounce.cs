@@ -4,6 +4,7 @@ using System.Collections;
 public class Bounce : MonoBehaviour 
 {
 	public Vector2 velocity;
+	public static string ballColor;
 
 	void Start()
 	{
@@ -18,62 +19,69 @@ public class Bounce : MonoBehaviour
 
 		if (transform.position.x >= GameBounds.bounds.x) 
 		{
-			velocity.x = -velocity.x;
+			ChangeXVelocity();
 		}
 		if (transform.position.y >= GameBounds.bounds.y)
 		{
-			velocity.y = -velocity.y;
+			ChangeYVelocity();
 		}
 		if (transform.position.x <= -GameBounds.bounds.x) 
 		{
-			velocity.x = -velocity.x;
+			ChangeXVelocity();
 		}
 		if (transform.position.y <= -GameBounds.bounds.y)
 		{
-			velocity.y = -velocity.y;
+			ChangeYVelocity();
 		}
 	}
 
 void OnCollisionEnter2D(Collision2D coll)
 	{
+		//collision for red bricks
 		if (coll.gameObject.tag == "RedBrick") 
 		{
-			//check to see if it hits the bottom or the top:
-			velocity.y = -velocity.y;
-			
-
-			//check to see if it hits one of the sides:
-			velocity.x = -velocity.x;
+			ChangeYVelocity();
+			ChangeXVelocity();
 		}	
 		
-		if(coll.gameObject.tag == "BlackBrick")
+		//collision for black paint bricks
+		if(coll.gameObject.tag == "BlackPaintBrick")
 		{
 			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 			renderer.color = new Color(0f, 0, 0, 1f); // Set to black
-			
-			//check to see if it hits the bottom or the top:
-			velocity.y = -velocity.y;
-			
-			
-			//check to see if it hits one of the sides:
-			velocity.x = -velocity.x;
+			ballColor = "Black";
+
+			ChangeYVelocity();
+			ChangeXVelocity();
 		}		
 		
+		//collision for black bricks
+		if(coll.gameObject.tag == "BlackBrick")
+		{			
+			ChangeYVelocity();
+			ChangeXVelocity();
+		}	
+		
+		//collision for white bricks
 		if(coll.gameObject.tag == "WhiteBrick")
 		{
 			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 			renderer.color = new Color(255f, 255f, 255f); // Set to white?
+			ballColor = "White";
 			
-			//check to see if it hits the bottom or the top:
-			velocity.y = -velocity.y;
-			
-			
-			//check to see if it hits one of the sides:
-			velocity.x = -velocity.x;
-			
-//			gameObject.active = false;
-			
+			ChangeYVelocity();
+			ChangeXVelocity();
 		}
+	}
+	
+	void ChangeXVelocity()
+	{
+		velocity.x = -velocity.x;
+	}
+	
+	void ChangeYVelocity()
+	{
+		velocity.y = -velocity.y;
 	}
 }
 

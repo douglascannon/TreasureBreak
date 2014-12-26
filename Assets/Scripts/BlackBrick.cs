@@ -15,7 +15,13 @@ public class BlackBrick : MonoBehaviour {
 	
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-//		coll.gameObject.SetActive(false);	
+		if(coll.gameObject.tag == "Ball")
+		{
+			if (Bounce.ballColor == "Black")
+			{
+				gameObject.active = false;
+			}
+		}
 	}
 	
 	
