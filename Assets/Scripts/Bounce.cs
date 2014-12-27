@@ -1,10 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class Bounce : MonoBehaviour 
 {
 	public Vector2 velocity;
 	public static string ballColor;
+	public Button RightButton;
+	public Button LeftButton;
 
 	void Start()
 	{
@@ -19,7 +22,7 @@ public class Bounce : MonoBehaviour
 
 		if (transform.position.x >= GameBounds.bounds.x) 
 		{
-			ChangeXVelocity();
+			velocity.x = 0f;
 		}
 		if (transform.position.y >= GameBounds.bounds.y)
 		{
@@ -27,7 +30,7 @@ public class Bounce : MonoBehaviour
 		}
 		if (transform.position.x <= -GameBounds.bounds.x) 
 		{
-			ChangeXVelocity();
+			velocity.x = 0f;
 		}
 		if (transform.position.y <= -GameBounds.bounds.y)
 		{
@@ -39,34 +42,21 @@ public class Bounce : MonoBehaviour
 	// Use PointerEnter and PointerUp to denote when a button is pressed and released?
 	//
 	
+
+	
 	public void MoveRight()
 	{
-		if (Input.GetTouch(0).phase == TouchPhase.Began)
-		{
-			velocity.x = 0.2f;
-		}
-		if (Input.GetTouch(0).phase == TouchPhase.Ended)
-		{
-			velocity.x = 0f;
-		}
+		velocity.x = 0.2f;
 	}
-	
 	public void MoveLeft()
 	{
-		if(Input.touchCount > 0)
-		{
-			
-		}
-	
-		if (Input.GetTouch(0).phase == TouchPhase.Began)
-		{
 			velocity.x = -0.2f;
-		}
-		if (Input.GetTouch(0).phase == TouchPhase.Ended)
-		{
-			velocity.x = 0f;
-		}
 	}
+	public void StopMoving()
+	{
+		velocity.x = 0f;
+	}
+	
 	
 	void OnCollisionEnter2D(Collision2D coll)
 	{
@@ -74,7 +64,6 @@ public class Bounce : MonoBehaviour
 		if (coll.gameObject.tag == "RedBrick") 
 		{
 			ChangeYVelocity();
-			ChangeXVelocity();
 		}	
 		
 		//collision for black paint bricks
@@ -85,14 +74,12 @@ public class Bounce : MonoBehaviour
 			ballColor = "Black";
 
 			ChangeYVelocity();
-			ChangeXVelocity();
 		}		
 		
 		//collision for black bricks
 		if(coll.gameObject.tag == "BlackBrick")
 		{			
 			ChangeYVelocity();
-			ChangeXVelocity();
 		}	
 		
 		//collision for white bricks
@@ -103,7 +90,6 @@ public class Bounce : MonoBehaviour
 			ballColor = "White";
 			
 			ChangeYVelocity();
-			ChangeXVelocity();
 		}
 	}
 	
