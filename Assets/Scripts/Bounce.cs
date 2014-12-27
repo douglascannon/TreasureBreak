@@ -41,16 +41,6 @@ public class Bounce : MonoBehaviour
 	
 	public void MoveRight()
 	{
-		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-		{
-			velocity.x = 0.2f;
-		}
-	
-		if(Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended)
-		{
-			velocity.x = 0.2f;
-		}
-	/*
 		if (Input.GetButtonDown ("Right Button"))
 		{
 			velocity.x = 0.2f;
@@ -59,7 +49,6 @@ public class Bounce : MonoBehaviour
 		{
 			velocity.x = 0f;
 		}
-	*/
 	}
 	
 	public void MoveLeft()
