@@ -8,10 +8,12 @@ public class Bounce : MonoBehaviour
 	public static string ballColor;
 	public Button RightButton;
 	public Button LeftButton;
+	public float xVelocity;
 
 	void Start()
 	{
 		ballColor = "Red";
+		xVelocity = 0.15f;
 	}
 
 	void FixedUpdate()
@@ -44,11 +46,11 @@ public class Bounce : MonoBehaviour
 	
 	public void MoveRight()
 	{
-		velocity.x = 0.2f;
+		velocity.x = xVelocity;
 	}
 	public void MoveLeft()
 	{
-			velocity.x = -0.2f;
+			velocity.x = -xVelocity;
 	}
 	public void StopMoving()
 	{
