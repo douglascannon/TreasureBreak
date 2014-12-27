@@ -34,8 +34,36 @@ public class Bounce : MonoBehaviour
 			ChangeYVelocity();
 		}
 	}
-
-void OnCollisionEnter2D(Collision2D coll)
+	
+	//
+	// Use PointerEnter and PointerUp to denote when a button is pressed and released?
+	//
+	
+	public void MoveRight()
+	{
+		if (Input.GetButtonDown ("Right Button"))
+		{
+			velocity.x = 0.2f;
+		}
+		if (Input.GetButtonUp ("Right Button"))
+		{
+			velocity.x = 0f;
+		}
+	}
+	
+	public void MoveLeft()
+	{
+		if (Input.GetButtonDown ("Left Button"))
+		{
+			velocity.x = -0.2f;
+		}
+		if (Input.GetButtonUp ("Left Button"))
+		{
+			velocity.x = 0f;
+		}
+	}
+	
+	void OnCollisionEnter2D(Collision2D coll)
 	{
 		//collision for red bricks
 		if (coll.gameObject.tag == "RedBrick") 
@@ -63,7 +91,7 @@ void OnCollisionEnter2D(Collision2D coll)
 		}	
 		
 		//collision for white bricks
-		if(coll.gameObject.tag == "WhiteBrick")
+		if(coll.gameObject.tag == "WhitePaintBrick")
 		{
 			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 			renderer.color = new Color(255f, 255f, 255f); // Set to white?
