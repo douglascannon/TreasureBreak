@@ -8,7 +8,10 @@ public class RedBrick : MonoBehaviour
 	//make the brick disappear when the ball hits it.
 		if(coll.gameObject.tag == "Ball")
 		{
-			gameObject.active = false;
+			if (Bounce.ballColor == "Red")
+			{
+				gameObject.active = false;
+			}
 		}		
 	}
 }

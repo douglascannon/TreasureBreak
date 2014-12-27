@@ -11,7 +11,7 @@ public class Bounce : MonoBehaviour
 
 	void Start()
 	{
-		
+		ballColor = "Red";
 	}
 
 	void FixedUpdate()
@@ -46,15 +46,11 @@ public class Bounce : MonoBehaviour
 	{
 		velocity.x = 0.2f;
 	}
-	public void StopMovingRight()
-	{
-		velocity.x = 0f;
-	}
 	public void MoveLeft()
 	{
 			velocity.x = -0.2f;
 	}
-	public void StopMovingLeft()
+	public void StopMoving()
 	{
 		velocity.x = 0f;
 	}
