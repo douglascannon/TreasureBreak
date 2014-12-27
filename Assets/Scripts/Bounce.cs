@@ -42,17 +42,19 @@ public class Bounce : MonoBehaviour
 	// Use PointerEnter and PointerUp to denote when a button is pressed and released?
 	//
 	
-
-	
 	public void MoveRight()
 	{
 		velocity.x = 0.2f;
+	}
+	public void StopMovingRight()
+	{
+		velocity.x = 0f;
 	}
 	public void MoveLeft()
 	{
 			velocity.x = -0.2f;
 	}
-	public void StopMoving()
+	public void StopMovingLeft()
 	{
 		velocity.x = 0f;
 	}
