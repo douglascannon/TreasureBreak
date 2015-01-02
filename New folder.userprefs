@@ -2,11 +2,11 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Bounce.cs">
     <Files>
-      <File FileName="Assets\Scripts\Bounce.cs" Line="109" Column="24" />
-      <File FileName="Assets\Scripts\GameBounds.cs" Line="17" Column="1" />
-      <File FileName="Assets\Scripts\RedBrick.cs" Line="15" Column="1" />
-      <File FileName="Assets\Scripts\BlackBrick.cs" Line="17" Column="1" />
-      <File FileName="Assets\Scripts\WhiteBrick.cs" Line="15" Column="1" />
+      <File FileName="Assets\Scripts\Bounce.cs" Line="19" Column="46" />
+      <File FileName="Assets\Scripts\GameBounds.cs" Line="6" Column="34" />
+      <File FileName="Assets\Scripts\BlackBrick.cs" Line="14" Column="27" />
+      <File FileName="Assets\Scripts\RedBrick.cs" Line="15" Column="27" />
+      <File FileName="Assets\Scripts\BlueBrick.cs" Line="15" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
