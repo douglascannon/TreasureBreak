@@ -13,7 +13,7 @@ public class Bounce : MonoBehaviour
 	public float initialXVelocity;
 	public static int brickCount;
 	public string lastHitDirection;
-	public float xMovement = 0.2f;
+	public float xMovement = 0.3f;
 	
 	//---------------------raycasting------------------
 	
@@ -32,7 +32,7 @@ public class Bounce : MonoBehaviour
 	void Start()
 	{
 		ballColor = "Red";
-		initialXVelocity = 0.15f;
+		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
 		lastHitDirection = "up";
 //		SetLastHitDirection();
@@ -188,13 +188,28 @@ public class Bounce : MonoBehaviour
 			velocity.y = ZERO;
 			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 			renderer.color = new Color(0f, 180f, 0f); // Set to green
-			print("You win!");
 		}
 	}
 	
-	//
-	// Use PointerEnter and PointerUp to denote when a button is pressed and released?
-	//
+	public void MoveLeft()
+	{
+		if(Input.touchCount > 1)
+		{
+			velocity.x = ZERO;
+		}
+		else
+		{
+			// if the ball is all the way to the left, don't let it move left
+			if (transform.position.x <= -GameBounds.bounds.x) 
+			{
+				return;
+			}
+			else
+			{
+				velocity.x = -initialXVelocity;
+			}
+		}
+	}
 	
 	public void MoveRight()
 	{
@@ -215,25 +230,7 @@ public class Bounce : MonoBehaviour
 			}
 		}
 	}
-	public void MoveLeft()
-	{
-		if(Input.touchCount > 1)
-		{
-			velocity.x = ZERO;
-		}
-		else
-		{
-		// if the ball is all the way to the left, don't let it move left
-			if (transform.position.x <= -GameBounds.bounds.x) 
-			{
-				return;
-			}
-			else
-			{
-				velocity.x = -initialXVelocity;
-			}
-		}
-	}
+
 	public void StopMoving()
 	{
 		velocity.x = ZERO;
