@@ -9,7 +9,9 @@ public class BlackBrick : MonoBehaviour
 		{
 			if (Bounce.ballColor == "Black")
 			{
-				gameObject.active = false;
+				Destroy(gameObject);
+				print("Hit!");
+//				--Bounce.brickCount;
 			}
 		}
 	}
