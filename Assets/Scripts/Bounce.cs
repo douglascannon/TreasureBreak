@@ -129,26 +129,11 @@ public class Bounce : MonoBehaviour
 		// check for an interaction with the bounds
 		if(hitBounds == true)
 		{		
-			if(side == "up" || side == "down")
-			{
-				ChangeYVelocity();
-			}
-			// --------------------------movement for hitting the left or right wall------------------------------------
-			if(side == "left")
-			{
-				StopMoving();
-//				Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
-//				transform.position = newPosition;
-			}
-			if(side == "right")
-			{
-				StopMoving();
-//				Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
-//				transform.position = newPosition;
-			}
+			if(side == "up" || side == "down") ChangeYVelocity();
+			else StopMoving();
 		}
 	}
-	
+	 
 	void Movement()
 	{
 		if (brickCount != 0)
@@ -221,53 +206,7 @@ public class Bounce : MonoBehaviour
 			}
 		}
 	}
-	
-	/* don't really need this collision code anymore
-	void OnCollisionEnter2D(Collision2D coll)
-	{
-		//collision for red bricks
-		if (coll.gameObject.tag == "RedBrick" && velocity.x == 0f) 
-		{
-			ChangeYVelocity();
-		}	
-		
-		//collision for black paint bricks
-		if(coll.gameObject.tag == "BlackPaintBrick")
-		{
-			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-			renderer.color = new Color(0f, 0, 0, 1f); // Set to black
-			ballColor = "Black";
 
-			ChangeYVelocity();
-		}		
-		
-		//collision for black bricks
-		if(coll.gameObject.tag == "BlackBrick" && velocity.x == 0f)
-		{			
-			ChangeYVelocity();
-		}	
-		
-		//collision for white bricks
-		if(coll.gameObject.tag == "WhitePaintBrick")
-		{
-			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-			renderer.color = new Color(255f, 255f, 255f); // Set to white?
-			ballColor = "White";
-			
-			ChangeYVelocity();
-		}
-		
-		if(coll.gameObject.tag == "RedPaintBrick")
-		{
-			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-			renderer.color = new Color(255f, 0f, 0f); // Set to white?
-			ballColor = "Red";
-			
-			ChangeYVelocity();
-		}
-	}
-	*/
-	
 	void StopMoving()
 	{
 		velocity.x = ZERO;
