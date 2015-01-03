@@ -12,7 +12,7 @@ public class Bounce : MonoBehaviour
 	public float initialYVelocity;
 	public float initialXVelocity;
 	public static int brickCount;
-	public float xMovement = 0.15f; //this is the distance the ball recoils
+	public float xRecoil = 0.15f; //this is the distance the ball recoils
 	public bool hitBrick = false;
 	public bool hitBounds = false;
 	public string brickTag;
@@ -78,7 +78,7 @@ public class Bounce : MonoBehaviour
 	}
 	
 	// check for interaction with a brick
-	void IfHitBrick(string side)
+	void IfHitBrick(string ballSide)
 	{
 		if(hitBrick == true)
 		{
@@ -87,8 +87,7 @@ public class Bounce : MonoBehaviour
 			{
 				Destroy (whatIHit.collider.gameObject);
 				brickCount--;
-				
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 			//redchange code
 			else if(brickTag == redChange)
@@ -96,7 +95,7 @@ public class Bounce : MonoBehaviour
 				ballColor = "red";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(255f, 0f, 0f);
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 			//bluechange code
 			else if (brickTag == blueChange)
@@ -104,7 +103,7 @@ public class Bounce : MonoBehaviour
 				ballColor = "blue";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(0f, 128f, 255f);
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 			//greenchange code
 			else if(brickTag == greenChange)
@@ -112,7 +111,7 @@ public class Bounce : MonoBehaviour
 				ballColor = "green";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(0f, 255f, 64f);
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 			//yellowchange code
 			else if(brickTag == yellowChange)
@@ -120,41 +119,42 @@ public class Bounce : MonoBehaviour
 				ballColor = "yellow";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(255f, 255f, 0f);
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 			//death code
-			if(brickTag == death)
+			else if(brickTag == death)
 			{
-				velocity.x = ZERO;
-				velocity.y = ZERO;
+				//don't do this for now. It makes it too hard to debug other changes. lol.
+//				velocity.x = ZERO;
+//				velocity.y = ZERO;
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(0f, 0f, 0f);
-				//display life lost text and start the scene over, with one less life
+				//display life lost text and start the scene over, with one less life, etc
 			}
 			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
 			else
 			{
-				CheckInteraction(side);
+				CheckInteraction(ballSide);
 			}
 		}
 	}
 	
-	void CheckInteraction(string side)
+	void CheckInteraction(string ballSide)
 	{
 		// check for an up or down interaction
-		if(side == "up" || side == "down")
+		if(ballSide == "up" || ballSide == "down")
 		{
 			ChangeYVelocity();
 		}
 		// --------------------------recoil movement for hitting the side of a brick------------------------------------
-		if(side == "left")
+		if(ballSide == "left")
 		{
-			Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
+			Vector2 newPosition = new Vector2(transform.position.x + xRecoil, transform.position.y);
 			transform.position = newPosition;
 		}
-		if(side == "right")
+		if(ballSide == "right")
 		{
-			Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
+			Vector2 newPosition = new Vector2(transform.position.x - xRecoil, transform.position.y);
 			transform.position = newPosition;
 		}
 	}
@@ -193,11 +193,11 @@ public class Bounce : MonoBehaviour
 				ChangeYVelocity();
 			}
 		}
-		else //debug brickCount
+		else
 		{
 			velocity.x = ZERO;
 			velocity.y = ZERO;
-			//display a win text here, etc
+			//display a win text and score here, etc
 		}
 	}
 	
