@@ -6,20 +6,16 @@ public class Bounce : MonoBehaviour
 {
 	const float ZERO = 0f;
 	public Vector2 velocity;
-	public static string ballColor;
+	public static string ballColor; //make sure this is lowercase, same as the brick's tag
 	public Button RightButton;
 	public Button LeftButton;	
 	public float initialYVelocity;
 	public float initialXVelocity;
 	public static int brickCount;
-	public string lastHitDirection;
-	public float xMovement = 0.3f;
-	
-	//---------------------raycasting------------------
-	
-	public bool interact = false;
+	public float xMovement = 0.15f; //this is the distance the ball recoils
 	public bool hitBrick = false;
 	public bool hitBounds = false;
+	public string brickTag;
 	public Transform upLineStart, upLineEnd;
 	public Transform downLineStart, downLineEnd;
 	public Transform leftLineStart, leftLineEnd;
@@ -31,12 +27,10 @@ public class Bounce : MonoBehaviour
 
 	void Start()
 	{
-		ballColor = "Red";
+		ballColor = "red";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
-		lastHitDirection = "up";
-//		SetLastHitDirection();
-		brickCount = 31;
+		brickCount = 100;
 	}
 
 	void FixedUpdate()
@@ -62,6 +56,7 @@ public class Bounce : MonoBehaviour
 		{
 			whatIHit = Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick"));
 			hitBrick = true;
+			brickTag = whatIHit.collider.gameObject.tag;
 		}
 		else if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Bounds")))
 		{
@@ -78,47 +73,57 @@ public class Bounce : MonoBehaviour
 		IfHitBounds(ballSide);
 	}
 	
-	// check for an up or down interaction
+	// check for interaction with a brick
 	void IfHitBrick(string side)
 	{
-		// check for interaction with a brick
 		if(hitBrick == true)
 		{
-			Destroy (whatIHit.collider.gameObject);
-			brickCount--;
-			
-			if(side == "up" || side == "down")
+			// if the brickTag and the ballColor are the same, bounce off and destroy the brick.
+			if(brickTag == ballColor)
 			{
-				ChangeYVelocity();
+				Destroy (whatIHit.collider.gameObject);
+				brickCount--;
+				
+				// check for an up or down interaction
+				if(side == "up" || side == "down")
+				{
+					ChangeYVelocity();
+				}
+				// --------------------------recoil movement for hitting the side of a brick------------------------------------
+				if(side == "left")
+				{
+					Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
+					transform.position = newPosition;
+				}
+				if(side == "right")
+				{
+					Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
+					transform.position = newPosition;
+				}
 			}
-			// --------------------------movement for hitting the side of a brick------------------------------------
-			if(side == "left")
-			{
-				Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
-				transform.position = newPosition;
-			}
-			if(side == "right")
-			{
-				Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
-				transform.position = newPosition;
-			}
-
-			
-			/*
-			if (lastHitDirection == "up")
-			{
-				lastHitDirection = "down";
-				velocity.y = initialYVelocity;
-			}
+			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
 			else
 			{
-				lastHitDirection = "up";
-				velocity.y = -initialYVelocity;
+				// check for an up or down interaction
+				if(side == "up" || side == "down")
+				{
+					ChangeYVelocity();
+				}
+				// --------------------------recoil movement for hitting the side of a brick------------------------------------
+				if(side == "left")
+				{
+					Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
+					transform.position = newPosition;
+				}
+				if(side == "right")
+				{
+					Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
+					transform.position = newPosition;
+				}
 			}
-			*/
 		}
 	}
-	
+
 	void IfHitBounds(string side)
 	{
 		// check for an interaction with the bounds
@@ -140,19 +145,6 @@ public class Bounce : MonoBehaviour
 				Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
 				transform.position = newPosition;
 			}
-			
-			/*
-			if (lastHitDirection == "up")
-			{
-				lastHitDirection = "down";
-				velocity.y = initialYVelocity;
-			}
-			else
-			{
-				lastHitDirection = "up";
-				velocity.y = -initialYVelocity;
-			}
-		*/
 		}
 	}
 	
@@ -165,24 +157,22 @@ public class Bounce : MonoBehaviour
 			
 			if (transform.position.x >= GameBounds.bounds.x) 
 			{
-				velocity.x = ZERO;
+				StopMoving();
 			}
 			if (transform.position.y >= GameBounds.bounds.y)
 			{
 			ChangeYVelocity();
-				//			lastHitDirection = "up";
 			}
 			if (transform.position.x <= -GameBounds.bounds.x) 
 			{
-				velocity.x = ZERO;
+				StopMoving();
 			}
 			if (transform.position.y <= -GameBounds.bounds.y)
 			{
 				ChangeYVelocity();
-				//			lastHitDirection = "down";
 			}
 		}
-		else
+		else //debug brickCount
 		{
 			velocity.x = ZERO;
 			velocity.y = ZERO;
@@ -195,7 +185,7 @@ public class Bounce : MonoBehaviour
 	{
 		if(Input.touchCount > 1)
 		{
-			velocity.x = ZERO;
+			StopMoving();
 		}
 		else
 		{
@@ -215,7 +205,7 @@ public class Bounce : MonoBehaviour
 	{
 		if(Input.touchCount > 1)
 		{
-			velocity.x = ZERO;
+			StopMoving();
 		}
 		else
 		{
@@ -290,18 +280,6 @@ public class Bounce : MonoBehaviour
 	void ChangeYVelocity()
 	{
 		velocity.y = -velocity.y;
-	}
-	
-	void SetLastHitDirection()
-	{
-		if (velocity.y > 0)
-		{
-			lastHitDirection = "down";
-		}
-		else
-		{
-			lastHitDirection = "up";
-		}
 	}
 }
 
