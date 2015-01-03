@@ -133,7 +133,7 @@ public class Bounce : MonoBehaviour
 			else StopMoving();
 		}
 	}
-	
+	 
 	void Movement()
 	{
 		if (brickCount != 0)
