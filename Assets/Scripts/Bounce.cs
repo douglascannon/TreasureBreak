@@ -20,10 +20,12 @@ public class Bounce : MonoBehaviour
 	public Transform downLineStart, downLineEnd;
 	public Transform leftLineStart, leftLineEnd;
 	public Transform rightLineStart, rightLineEnd;
-	
 	RaycastHit2D whatIHit;
 	
-	//-------------------------------------------------
+	//here are the change brick tags:
+	const string redChange = "redchange";
+	const string blueChange = "bluechange";
+	
 
 	void Start()
 	{
@@ -38,7 +40,6 @@ public class Bounce : MonoBehaviour
 		Movement();
 		RayCasting();
 	}
-	
 	
 	void RayCasting()
 	{
@@ -57,6 +58,7 @@ public class Bounce : MonoBehaviour
 			whatIHit = Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick"));
 			hitBrick = true;
 			brickTag = whatIHit.collider.gameObject.tag;
+//			print (brickTag);
 		}
 		else if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Bounds")))
 		{
@@ -84,46 +86,52 @@ public class Bounce : MonoBehaviour
 				Destroy (whatIHit.collider.gameObject);
 				brickCount--;
 				
-				// check for an up or down interaction
-				if(side == "up" || side == "down")
-				{
-					ChangeYVelocity();
-				}
-				// --------------------------recoil movement for hitting the side of a brick------------------------------------
-				if(side == "left")
-				{
-					Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
-					transform.position = newPosition;
-				}
-				if(side == "right")
-				{
-					Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
-					transform.position = newPosition;
-				}
+				CheckInteraction(side);
+			}
+			//redchange code
+			else if(brickTag == redChange)
+			{
+				ballColor = "red";
+				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+				renderer.color = new Color(255f, 0f, 0f);
+				CheckInteraction(side);
+			}
+			//bluechange code
+			else if (brickTag == blueChange)
+			{
+				ballColor = "blue";
+				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+				renderer.color = new Color(0f, 128f, 255f);
+				CheckInteraction(side);
 			}
 			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
 			else
 			{
-				// check for an up or down interaction
-				if(side == "up" || side == "down")
-				{
-					ChangeYVelocity();
-				}
-				// --------------------------recoil movement for hitting the side of a brick------------------------------------
-				if(side == "left")
-				{
-					Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
-					transform.position = newPosition;
-				}
-				if(side == "right")
-				{
-					Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
-					transform.position = newPosition;
-				}
+				CheckInteraction(side);
 			}
 		}
 	}
-
+	
+	void CheckInteraction(string side)
+	{
+		// check for an up or down interaction
+		if(side == "up" || side == "down")
+		{
+			ChangeYVelocity();
+		}
+		// --------------------------recoil movement for hitting the side of a brick------------------------------------
+		if(side == "left")
+		{
+			Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
+			transform.position = newPosition;
+		}
+		if(side == "right")
+		{
+			Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
+			transform.position = newPosition;
+		}
+	}
+	
 	void IfHitBounds(string side)
 	{
 		// check for an interaction with the bounds
@@ -133,7 +141,7 @@ public class Bounce : MonoBehaviour
 			else StopMoving();
 		}
 	}
-	 
+	
 	void Movement()
 	{
 		if (brickCount != 0)
