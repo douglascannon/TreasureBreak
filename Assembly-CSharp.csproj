@@ -46,15 +46,8 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\BlackBrick.cs" />
-     <Compile Include="Assets\Scripts\BlueBrick.cs" />
      <Compile Include="Assets\Scripts\Bounce.cs" />
-     <Compile Include="Assets\Scripts\Button.cs" />
-     <Compile Include="Assets\Scripts\DisplayText.cs" />
      <Compile Include="Assets\Scripts\GameBounds.cs" />
-     <Compile Include="Assets\Scripts\RedBrick.cs" />
-     <Compile Include="Assets\Scripts\WallBrick.cs" />
-     <Compile Include="Assets\Scripts\WhiteBrick.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/4.6.1/UnityEngine.UI.dll</HintPath>
  </Reference>

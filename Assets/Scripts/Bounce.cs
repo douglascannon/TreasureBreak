@@ -127,7 +127,6 @@ public class Bounce : MonoBehaviour
 	void IfHitBounds(string side)
 	{
 		// check for an interaction with the bounds
-		
 		if(hitBounds == true)
 		{		
 			if(side == "up" || side == "down")
@@ -137,13 +136,15 @@ public class Bounce : MonoBehaviour
 			// --------------------------movement for hitting the left or right wall------------------------------------
 			if(side == "left")
 			{
-				Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
-				transform.position = newPosition;
+				StopMoving();
+//				Vector2 newPosition = new Vector2(transform.position.x + xMovement, transform.position.y);
+//				transform.position = newPosition;
 			}
 			if(side == "right")
 			{
-				Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
-				transform.position = newPosition;
+				StopMoving();
+//				Vector2 newPosition = new Vector2(transform.position.x - xMovement, transform.position.y);
+//				transform.position = newPosition;
 			}
 		}
 	}
@@ -220,11 +221,6 @@ public class Bounce : MonoBehaviour
 			}
 		}
 	}
-
-	public void StopMoving()
-	{
-		velocity.x = ZERO;
-	}
 	
 	/* don't really need this collision code anymore
 	void OnCollisionEnter2D(Collision2D coll)
@@ -271,6 +267,11 @@ public class Bounce : MonoBehaviour
 		}
 	}
 	*/
+	
+	void StopMoving()
+	{
+		velocity.x = ZERO;
+	}
 	
 	void ChangeXVelocity()
 	{
