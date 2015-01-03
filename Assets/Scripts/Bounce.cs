@@ -27,10 +27,10 @@ public class Bounce : MonoBehaviour
 
 	void Start()
 	{
-		ballColor = "red";
+		ballColor = "white";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
-		brickCount = 100;
+		brickCount = 40;
 	}
 
 	void FixedUpdate()
