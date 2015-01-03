@@ -22,10 +22,12 @@ public class Bounce : MonoBehaviour
 	public Transform rightLineStart, rightLineEnd;
 	RaycastHit2D whatIHit;
 	
-	//here are the change brick tags:
+	//here are the special brick tags:
 	const string redChange = "redchange";
 	const string blueChange = "bluechange";
-	
+	const string greenChange = "greenchange";
+	const string yellowChange = "yellowchange";
+	const string death = "death";
 
 	void Start()
 	{
@@ -104,6 +106,31 @@ public class Bounce : MonoBehaviour
 				renderer.color = new Color(0f, 128f, 255f);
 				CheckInteraction(side);
 			}
+			//greenchange code
+			else if(brickTag == greenChange)
+			{
+				ballColor = "green";
+				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+				renderer.color = new Color(0f, 255f, 64f);
+				CheckInteraction(side);
+			}
+			//yellowchange code
+			else if(brickTag == yellowChange)
+			{
+				ballColor = "yellow";
+				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+				renderer.color = new Color(255f, 255f, 0f);
+				CheckInteraction(side);
+			}
+			//death code
+			if(brickTag == death)
+			{
+				velocity.x = ZERO;
+				velocity.y = ZERO;
+				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+				renderer.color = new Color(0f, 0f, 0f);
+				//display life lost text and start the scene over, with one less life
+			}
 			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
 			else
 			{
@@ -170,8 +197,7 @@ public class Bounce : MonoBehaviour
 		{
 			velocity.x = ZERO;
 			velocity.y = ZERO;
-			SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-			renderer.color = new Color(0f, 180f, 0f); // Set to green
+			//display a win text here, etc
 		}
 	}
 	
