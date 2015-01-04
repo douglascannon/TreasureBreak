@@ -251,6 +251,8 @@ public class Bounce : MonoBehaviour
 		{
 			velocity.x = ZERO;
 			velocity.y = ZERO;
+			
+			Application.LoadLevel("winScreen");
 			//display a win text and score here, etc
 		}
 	}
