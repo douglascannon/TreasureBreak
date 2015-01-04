@@ -25,6 +25,7 @@ public class Bounce : MonoBehaviour
 	public Transform rightLineStart, rightLineEnd;
 	RaycastHit2D whatIHit;
 	
+	public bool dougctest = true;
 	//here are the special brick tags:
 	const string redChange = "redchange";
 	const string blueChange = "bluechange";
@@ -70,6 +71,13 @@ public class Bounce : MonoBehaviour
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
 	{
 		if (debugBool == true) Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
+
+		// This seems to fix the initial ball bug where it goes through bricks for a while.
+		// Why does this fix it?
+		if (dougctest == true) {
+			hitBrick = true;
+			dougctest = false;
+		}
 		
 		if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick")))
 		{
