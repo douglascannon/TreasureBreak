@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Bounce : MonoBehaviour 
 {
-	public bool debug = true;
+	public bool debugBool = true;
 
 	const float ZERO = 0f;
 	public Vector2 velocity;
@@ -42,10 +42,11 @@ public class Bounce : MonoBehaviour
 	void Start()
 	{
 		ballColor = "white";
+		brickTag = "white";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
 		brickCount = 57;
-		treasureBrickCount = 10;
+		treasureBrickCount = 20;
 		
 		//this needs to be somewhere else: It can't reload the amount of lives every time the player loses one.
 		//if the level doesn't reset the bricks when the player loses a life, this will be done differently anyway.
@@ -68,14 +69,14 @@ public class Bounce : MonoBehaviour
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
 	{
-		if (debug == true) Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
+		if (debugBool == true) Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
 		
 		if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick")))
 		{
 			whatIHit = Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick"));
 			hitBrick = true;
 			brickTag = whatIHit.collider.gameObject.tag;
-			if(debug ==  true) print (brickTag);
+			if(debugBool ==  true) print (brickTag);
 		}
 		else if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Bounds")))
 		{
@@ -156,7 +157,7 @@ public class Bounce : MonoBehaviour
 				{
 					CheckInteraction(ballSide);
 					
-					if(debug == false)
+					if(debugBool == false)
 					{
 						playerLives--;
 						Application.LoadLevel("scene");
@@ -165,7 +166,7 @@ public class Bounce : MonoBehaviour
 				else
 				{
 					//don't do this while debugging. It makes it too hard to debug other changes. lol.
-					if(debug == false)
+					if(debugBool == false)
 					{
 						velocity.x = ZERO;
 						velocity.y = ZERO;
@@ -274,7 +275,7 @@ public class Bounce : MonoBehaviour
 		}
 		else
 		{
-		// if the ball is all the way to the right, don't let it move right
+			// if the ball is all the way to the right, don't let it move right
 			if (transform.position.x >= GameBounds.bounds.x) 
 			{
 				return;
@@ -301,11 +302,3 @@ public class Bounce : MonoBehaviour
 		velocity.y = -velocity.y;
 	}
 }
-
-
-
-
-
-
-
-
