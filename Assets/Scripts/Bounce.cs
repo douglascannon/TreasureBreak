@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 public class Bounce : MonoBehaviour 
 {
+	public bool debug = true;
+
 	const float ZERO = 0f;
 	public Vector2 velocity;
 	public static string ballColor; //make sure this is lowercase, same as the brick's tag
@@ -11,7 +13,8 @@ public class Bounce : MonoBehaviour
 	public Button LeftButton;	
 	public float initialYVelocity;
 	public float initialXVelocity;
-	public static int brickCount;
+	public int brickCount;
+	public int treasureBrickCount;
 	public float xRecoil = 0.15f; //this is the distance the ball recoils
 	public bool hitBrick = false;
 	public bool hitBounds = false;
@@ -28,6 +31,7 @@ public class Bounce : MonoBehaviour
 	const string greenChange = "greenchange";
 	const string yellowChange = "yellowchange";
 	const string death = "death";
+	const string treasure = "treasure";
 	
 	//player info:
 	public int playerLives;
@@ -40,7 +44,8 @@ public class Bounce : MonoBehaviour
 		ballColor = "white";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
-		brickCount = 60;
+		brickCount = 57;
+		treasureBrickCount = 10;
 		
 		//this needs to be somewhere else: It can't reload the amount of lives every time the player loses one.
 		//if the level doesn't reset the bricks when the player loses a life, this will be done differently anyway.
@@ -63,14 +68,14 @@ public class Bounce : MonoBehaviour
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
 	{
-//		Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
+		if (debug == true) Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
 		
 		if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick")))
 		{
 			whatIHit = Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick"));
 			hitBrick = true;
 			brickTag = whatIHit.collider.gameObject.tag;
-//			print (brickTag);
+			if(debug ==  true) print (brickTag);
 		}
 		else if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Bounds")))
 		{
@@ -131,21 +136,43 @@ public class Bounce : MonoBehaviour
 				renderer.color = new Color(255f, 255f, 0f);
 				CheckInteraction(ballSide);
 			}
+			else if(brickTag == treasure)
+			{
+				if(brickCount == 0)
+				{
+					Destroy (whatIHit.collider.gameObject);
+					treasureBrickCount--;
+					CheckInteraction(ballSide);
+				}
+				else
+				{					
+					CheckInteraction(ballSide);
+				}
+			}
 			//death code
 			else if(brickTag == death)
 			{
 				if(playerLives != 0)
 				{
-					playerLives--;
-					Application.LoadLevel("scene");
+					CheckInteraction(ballSide);
+					
+					if(debug == false)
+					{
+						playerLives--;
+						Application.LoadLevel("scene");
+					}
 				}
 				else
 				{
 					//don't do this while debugging. It makes it too hard to debug other changes. lol.
-					velocity.x = ZERO;
-					velocity.y = ZERO;
-					SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-					renderer.color = new Color(0f, 0f, 0f);
+					if(debug == false)
+					{
+						velocity.x = ZERO;
+						velocity.y = ZERO;
+						SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+						renderer.color = new Color(0f, 0f, 0f);
+					}
+
 				}
 				//display life lost text and start the scene over, with one less life, etc
 			}
@@ -189,7 +216,7 @@ public class Bounce : MonoBehaviour
 	
 	void Movement()
 	{
-		if (brickCount != 0)
+		if (treasureBrickCount != 0)
 		{
 			Vector2 newPosition = new Vector2(transform.position.x + velocity.x, transform.position.y + velocity.y);
 			transform.position = newPosition;
