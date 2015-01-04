@@ -28,13 +28,23 @@ public class Bounce : MonoBehaviour
 	const string greenChange = "greenchange";
 	const string yellowChange = "yellowchange";
 	const string death = "death";
+	
+	//player info:
+	public int playerLives;
+	//use Time.time to calculate the time bonus. Time.time is the time in seconds since the start of the game. 
+	//Have a startTime that sets Time.time to the current time, to start counting from the start of the level.
+	public int timeBonus; 
 
 	void Start()
 	{
 		ballColor = "white";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
-		brickCount = 40;
+		brickCount = 60;
+		
+		//this needs to be somewhere else: It can't reload the amount of lives every time the player loses one.
+		//if the level doesn't reset the bricks when the player loses a life, this will be done differently anyway.
+		playerLives = 5;
 	}
 
 	void FixedUpdate()
@@ -53,7 +63,7 @@ public class Bounce : MonoBehaviour
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
 	{
-		Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
+//		Debug.DrawLine(lineStart.position,lineEnd.position, Color.green);
 		
 		if(Physics2D.Linecast(lineStart.position, lineEnd.position, 1 << LayerMask.NameToLayer("Brick")))
 		{
@@ -110,7 +120,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "green";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(0f, 255f, 64f);
+				renderer.color = new Color(0f, 255f, 0f);
 				CheckInteraction(ballSide);
 			}
 			//yellowchange code
@@ -124,11 +134,19 @@ public class Bounce : MonoBehaviour
 			//death code
 			else if(brickTag == death)
 			{
-				//don't do this for now. It makes it too hard to debug other changes. lol.
-//				velocity.x = ZERO;
-//				velocity.y = ZERO;
-				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(0f, 0f, 0f);
+				if(playerLives != 0)
+				{
+					playerLives--;
+					Application.LoadLevel("scene");
+				}
+				else
+				{
+					//don't do this while debugging. It makes it too hard to debug other changes. lol.
+					velocity.x = ZERO;
+					velocity.y = ZERO;
+					SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+					renderer.color = new Color(0f, 0f, 0f);
+				}
 				//display life lost text and start the scene over, with one less life, etc
 			}
 			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
@@ -182,7 +200,7 @@ public class Bounce : MonoBehaviour
 			}
 			if (transform.position.y >= GameBounds.bounds.y)
 			{
-			ChangeYVelocity();
+				ChangeYVelocity();
 			}
 			if (transform.position.x <= -GameBounds.bounds.x) 
 			{
