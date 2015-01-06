@@ -118,7 +118,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "red";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(255f, 0f, 0f);
+				renderer.color = new Color(1.0f, 0f, 0f);
 				CheckInteraction(ballSide);
 			}
 			//bluechange code
@@ -126,7 +126,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "blue";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(0f, 128f, 255f);
+				renderer.color = new Color(0.4f, 0.7f, 1f);
 				CheckInteraction(ballSide);
 			}
 			//greenchange code
@@ -134,7 +134,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "green";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(0f, 255f, 0f);
+				renderer.color = new Color(0f, 1f, 0f);
 				CheckInteraction(ballSide);
 			}
 			//yellowchange code
@@ -142,7 +142,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "yellow";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(255f, 255f, 0f);
+				renderer.color = new Color(1f, 1f, 0f);
 				CheckInteraction(ballSide);
 			}
 			else if(brickTag == treasure)
