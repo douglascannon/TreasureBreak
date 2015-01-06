@@ -38,8 +38,8 @@ public class Bounce : MonoBehaviour
 	bool switchBool = false;
 	
 	//player info:
-	public int playerLives = 5;
-	int tempPlayerLives;
+	public int playerLives = 5; //this will need to be reset each time a player moves to the next level.
+	
 	//use Time.time to calculate the time bonus. Time.time is the time in seconds since the start of the game. 
 	//Have a startTime that sets Time.time to the current time, to start counting from the start of the level.
 	public int timeBonus; 
@@ -59,10 +59,6 @@ public class Bounce : MonoBehaviour
 			print (brickCount);
 			print (treasureBrickCount);
 		} 
-		
-		//this needs to be somewhere else: It can't reload the amount of lives every time the player loses one.
-		//if the level doesn't reset the bricks when the player loses a life, this will be done differently anyway.
-		tempPlayerLives = playerLives;
 	}
 
 	void FixedUpdate()
