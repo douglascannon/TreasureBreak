@@ -23,6 +23,11 @@ public class Bounce : MonoBehaviour
 	public Transform downLineStart, downLineEnd;
 	public Transform leftLineStart, leftLineEnd;
 	public Transform rightLineStart, rightLineEnd;
+	//more to fix bug
+	public Transform upLeftLineStart, upLeftLineEnd;
+	public Transform upRightLineStart, upRightLineEnd;
+	public Transform downLeftLineStart, downLeftLineEnd;
+	public Transform downRightLineStart, downRightLineEnd;
 	RaycastHit2D whatIHit;
 	
 	public bool dougctest = true;
@@ -32,10 +37,13 @@ public class Bounce : MonoBehaviour
 	const string greenChange = "greenchange";
 	const string yellowChange = "yellowchange";
 	const string arrows = "arrows";
+	const string padlock = "padlock";
+	const string key = "key";
 	const string death = "death";
 	const string treasure = "treasure";
 	
 	bool switchBool = false;
+	bool keyBool = false;
 	
 	//player info:
 	public int playerLives = 5; //this will need to be reset each time a player moves to the next level.
@@ -78,6 +86,12 @@ public class Bounce : MonoBehaviour
 		LineCastCheck(downLineStart, downLineEnd, "down");
 		LineCastCheck(leftLineStart, leftLineEnd, "left");
 		LineCastCheck(rightLineStart, rightLineEnd, "right");
+		//more to fix bug
+		LineCastCheck(upLeftLineStart, upLeftLineEnd, "upLeft");
+		LineCastCheck(upRightLineStart, upRightLineEnd, "upRight");
+		LineCastCheck(downLeftLineStart, downLeftLineEnd, "downLeft");
+		LineCastCheck(downRightLineStart, downRightLineEnd, "downRight");
+		//These need to be fixed...they can't just be up and down. They need their own bounce method, unfortunately. Make them bounce a little bit out, and also change direction.
 	}
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
@@ -161,8 +175,33 @@ public class Bounce : MonoBehaviour
 			{
 				SwitchDirections();
 				Destroy (whatIHit.collider.gameObject);
-				brickCount--;
 				CheckInteraction(ballSide);
+			}
+			else if(brickTag == padlock)
+			{
+				if(keyBool == true)
+				{
+					Destroy (whatIHit.collider.gameObject);
+					CheckInteraction(ballSide);
+					keyBool = false;
+				}
+				else
+				{
+					CheckInteraction(ballSide);
+				}
+			}
+			else if(brickTag == key)
+			{
+				if(keyBool == true)
+				{
+					CheckInteraction(ballSide);
+				}
+				else
+				{
+					Destroy (whatIHit.collider.gameObject);
+					CheckInteraction(ballSide);
+					keyBool = true;
+				}
 			}
 			else if(brickTag == treasure)
 			{
@@ -227,6 +266,18 @@ public class Bounce : MonoBehaviour
 		}
 		if(ballSide == "right")
 		{
+			Vector2 newPosition = new Vector2(transform.position.x - xRecoil, transform.position.y);
+			transform.position = newPosition;
+		}
+		if(ballSide == "upLeft" || ballSide == "downLeft")
+		{
+			ChangeYVelocity();
+			Vector2 newPosition = new Vector2(transform.position.x + xRecoil, transform.position.y);
+			transform.position = newPosition;
+		}
+		if(ballSide == "upRight" || ballSide == "downRight")
+		{
+			ChangeYVelocity();
 			Vector2 newPosition = new Vector2(transform.position.x - xRecoil, transform.position.y);
 			transform.position = newPosition;
 		}
