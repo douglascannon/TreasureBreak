@@ -58,6 +58,11 @@ public class Bounce : MonoBehaviour
 	{
 		Movement();
 		RayCasting();
+
+		if(Input.touchCount == 0)
+		{
+			StopMoving();
+		}
 	}
 	
 	void RayCasting()
