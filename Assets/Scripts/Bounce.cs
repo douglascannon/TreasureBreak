@@ -31,11 +31,15 @@ public class Bounce : MonoBehaviour
 	const string blueChange = "bluechange";
 	const string greenChange = "greenchange";
 	const string yellowChange = "yellowchange";
+	const string arrows = "arrows";
 	const string death = "death";
 	const string treasure = "treasure";
 	
+	bool switchBool = false;
+	
 	//player info:
-	public int playerLives;
+	public int playerLives = 5;
+	int tempPlayerLives;
 	//use Time.time to calculate the time bonus. Time.time is the time in seconds since the start of the game. 
 	//Have a startTime that sets Time.time to the current time, to start counting from the start of the level.
 	public int timeBonus; 
@@ -46,12 +50,19 @@ public class Bounce : MonoBehaviour
 		brickTag = "white";
 		initialXVelocity = 0.1f;
 		initialYVelocity = velocity.y;
-		brickCount = 57;
-		treasureBrickCount = 20;
+		Transform brickCountObject;
+		brickCountObject = GameObject.Find ("BrickNumber").transform;
+		brickCount = (int)brickCountObject.position.x;
+		treasureBrickCount = (int)brickCountObject.position.y;
+		if(debugBool == true)
+		{
+			print (brickCount);
+			print (treasureBrickCount);
+		} 
 		
 		//this needs to be somewhere else: It can't reload the amount of lives every time the player loses one.
 		//if the level doesn't reset the bricks when the player loses a life, this will be done differently anyway.
-		playerLives = 5;
+		tempPlayerLives = playerLives;
 	}
 
 	void FixedUpdate()
@@ -148,6 +159,13 @@ public class Bounce : MonoBehaviour
 				ballColor = "yellow";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
 				renderer.color = new Color(1f, 1f, 0f);
+				CheckInteraction(ballSide);
+			}
+			else if(brickTag == arrows)
+			{
+				SwitchDirections();
+				Destroy (whatIHit.collider.gameObject);
+				brickCount--;
 				CheckInteraction(ballSide);
 			}
 			else if(brickTag == treasure)
@@ -262,6 +280,12 @@ public class Bounce : MonoBehaviour
 		}
 	}
 	
+	public void LeftButtonPress()
+	{
+		if(switchBool == false) MoveLeft ();
+		else MoveRight();
+	}
+	
 	public void MoveLeft()
 	{
 		if(Input.touchCount > 1)
@@ -282,6 +306,12 @@ public class Bounce : MonoBehaviour
 		}
 	}
 	
+	public void RightButtonPress()
+	{
+		if(switchBool == false) MoveRight ();
+		else MoveLeft();
+	}
+	
 	public void MoveRight()
 	{
 		if(Input.touchCount > 1)
@@ -300,6 +330,18 @@ public class Bounce : MonoBehaviour
 				velocity.x = initialXVelocity;
 			}
 		}
+	}
+	
+	void SwitchDirections()
+	{
+		if(switchBool == true) 
+		{
+			switchBool = false;
+		}
+		else
+		{
+			switchBool = true;
+		} 
 	}
 
 	void StopMoving()
