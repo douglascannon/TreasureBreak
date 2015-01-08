@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Bounce : MonoBehaviour 
 {
-	public bool debugBool = true;
+	public bool debugBool = false;
 
 	const float ZERO = 0f;
 	public Vector2 velocity;
@@ -51,6 +51,9 @@ public class Bounce : MonoBehaviour
 	//use Time.time to calculate the time bonus. Time.time is the time in seconds since the start of the game. 
 	//Have a startTime that sets Time.time to the current time, to start counting from the start of the level.
 	public int timeBonus; 
+	//initialize these here as one. They'll get incremented when the player wins a level. They will stay the same to load the same level if they die.
+	public static int levelNum = 1;
+	public static string nextLevel = "level01";
 
 	void Start()
 	{
@@ -60,7 +63,7 @@ public class Bounce : MonoBehaviour
 		initialYVelocity = velocity.y;
 		Transform brickCountObject;
 		brickCountObject = GameObject.Find ("BrickNumber").transform;
-		brickCount = (int)brickCountObject.position.x;
+		brickCount = (int)brickCountObject.position.x - 1;
 		treasureBrickCount = (int)brickCountObject.position.y;
 		if(debugBool == true)
 		{
@@ -226,7 +229,7 @@ public class Bounce : MonoBehaviour
 					if(debugBool == false)
 					{
 						playerLives--;
-						Application.LoadLevel("scene");
+						Application.LoadLevel(nextLevel);
 					}
 				}
 				else
@@ -234,10 +237,8 @@ public class Bounce : MonoBehaviour
 					//don't do this while debugging. It makes it too hard to debug other changes. lol.
 					if(debugBool == false)
 					{
-						velocity.x = ZERO;
-						velocity.y = ZERO;
-						SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-						renderer.color = new Color(0f, 0f, 0f);
+						Application.LoadLevel("lose_screen");
+						playerLives = 5;
 					}
 
 				}
@@ -322,7 +323,7 @@ public class Bounce : MonoBehaviour
 			velocity.x = ZERO;
 			velocity.y = ZERO;
 			
-			Application.LoadLevel("winScreen");
+			Application.LoadLevel("win_screen");
 			//display a win text and score here, etc
 		}
 	}

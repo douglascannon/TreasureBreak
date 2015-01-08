@@ -9,18 +9,23 @@ public class WinScreen : MonoBehaviour {
 		//display text with time bonus, score, lives left, etc.
 	}
 	
-	// Update is called once per frame
-	void Update () 
-	{
-		if(Input.touchCount >= 1)
-		{
-			print ("touchCount >= 1");
-//			Application.LoadLevel("scene");
-		}
-	}
-	
 	public void ButtonPress()
 	{
-		Application.LoadLevel("level02");
+		ChangeNextLevel(); //increment to the next level before you load it.
+	
+		Application.LoadLevel(Bounce.nextLevel); //next level has been incrememted, now load it.
+	}
+	
+	public static void ChangeNextLevel()
+	{
+		Bounce.levelNum += 1;
+		if(Bounce.levelNum < 10)
+		{
+			Bounce.nextLevel = "level" + "0" + Bounce.levelNum.ToString();
+		}
+		else
+		{
+			Bounce.nextLevel = "level" + Bounce.levelNum.ToString();
+		}
 	}
 }
