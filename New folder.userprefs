@@ -1,10 +1,10 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WinScreen.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Bounce.cs">
     <Files>
-      <File FileName="Assets\Scripts\Bounce.cs" Line="320" Column="1" />
+      <File FileName="Assets\Scripts\Bounce.cs" Line="228" Column="21" />
       <File FileName="Assets\Scripts\GameBounds.cs" Line="21" Column="1" />
-      <File FileName="Assets\Scripts\WinScreen.cs" Line="23" Column="3" />
+      <File FileName="Assets\Scripts\WinScreen.cs" Line="24" Column="36" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
