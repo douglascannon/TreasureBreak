@@ -13,7 +13,7 @@ public class WinScreen : MonoBehaviour {
 	{
 		ChangeNextLevel(); //increment to the next level before you load it.
 	
-		Application.LoadLevel(Bounce.nextLevel); //next level has been incrememted, now load it.
+		Application.LoadLevel(Bounce.currentLevel); //next level has been incrememted, now load it.
 	}
 	
 	public static void ChangeNextLevel()
@@ -21,11 +21,11 @@ public class WinScreen : MonoBehaviour {
 		Bounce.levelNum += 1;
 		if(Bounce.levelNum < 10)
 		{
-			Bounce.nextLevel = "level" + "0" + Bounce.levelNum.ToString();
+			Bounce.currentLevel = "level0" + Bounce.levelNum.ToString();
 		}
 		else
 		{
-			Bounce.nextLevel = "level" + Bounce.levelNum.ToString();
+			Bounce.currentLevel = "level" + Bounce.levelNum.ToString();
 		}
 	}
 }

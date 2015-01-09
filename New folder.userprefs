@@ -2,9 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Bounce.cs">
     <Files>
-      <File FileName="Assets\Scripts\Bounce.cs" Line="228" Column="21" />
+      <File FileName="Assets\Scripts\Bounce.cs" Line="98" Column="63" />
       <File FileName="Assets\Scripts\GameBounds.cs" Line="21" Column="1" />
-      <File FileName="Assets\Scripts\WinScreen.cs" Line="24" Column="36" />
+      <File FileName="Assets\Scripts\WinScreen.cs" Line="4" Column="41" />
+      <File FileName="Assets\Scripts\LoseScreen.cs" Line="17" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

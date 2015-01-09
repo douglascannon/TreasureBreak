@@ -23,7 +23,7 @@ public class Bounce : MonoBehaviour
 	public Transform downLineStart, downLineEnd;
 	public Transform leftLineStart, leftLineEnd;
 	public Transform rightLineStart, rightLineEnd;
-	//more to fix bug
+	//more to fix bug -- didn't work. Not currently using these:
 	public Transform upLeftLineStart, upLeftLineEnd;
 	public Transform upRightLineStart, upRightLineEnd;
 	public Transform downLeftLineStart, downLeftLineEnd;
@@ -46,14 +46,15 @@ public class Bounce : MonoBehaviour
 	bool keyBool = false;
 	
 	//player info:
-	public int playerLives = 5; //this will need to be reset each time a player moves to the next level.
+	int playerLives = 5; // Will this need to be reset each time a player moves to the next level?
 	
 	//use Time.time to calculate the time bonus. Time.time is the time in seconds since the start of the game. 
 	//Have a startTime that sets Time.time to the current time, to start counting from the start of the level.
-	public int timeBonus; 
-	//initialize these here as one. They'll get incremented when the player wins a level. They will stay the same to load the same level if they die.
+	int timeBonus; //will this differ with each level? Or will it be the same? 60 seconds? 120?
+	
+	//initialize these here as 1. They'll get incremented when the player wins a level. They will stay the same to load the same level if they die.
 	public static int levelNum = 1;
-	public static string nextLevel = "level01";
+	public static string currentLevel = "level01";
 
 	void Start()
 	{
@@ -63,7 +64,7 @@ public class Bounce : MonoBehaviour
 		initialYVelocity = velocity.y;
 		Transform brickCountObject;
 		brickCountObject = GameObject.Find ("BrickNumber").transform;
-		brickCount = (int)brickCountObject.position.x - 1;
+		brickCount = (int)brickCountObject.position.x + 1; // I subtracted 1 here because the count math was off somehow, and I don't know where. 
 		treasureBrickCount = (int)brickCountObject.position.y;
 		if(debugBool == true)
 		{
@@ -89,12 +90,12 @@ public class Bounce : MonoBehaviour
 		LineCastCheck(downLineStart, downLineEnd, "down");
 		LineCastCheck(leftLineStart, leftLineEnd, "left");
 		LineCastCheck(rightLineStart, rightLineEnd, "right");
-		//more to fix bug
-		LineCastCheck(upLeftLineStart, upLeftLineEnd, "upLeft");
-		LineCastCheck(upRightLineStart, upRightLineEnd, "upRight");
-		LineCastCheck(downLeftLineStart, downLeftLineEnd, "downLeft");
-		LineCastCheck(downRightLineStart, downRightLineEnd, "downRight");
-		//These need to be fixed...they can't just be up and down. They need their own bounce method, unfortunately. Make them bounce a little bit out, and also change direction.
+		//more to fix bug?
+		LineCastCheck(upLeftLineStart, upLeftLineEnd, "up");
+		LineCastCheck(upRightLineStart, upRightLineEnd, "up");
+		LineCastCheck(downLeftLineStart, downLeftLineEnd, "down");
+		LineCastCheck(downRightLineStart, downRightLineEnd, "down");
+		//These need to be fixed^^^
 	}
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
@@ -222,27 +223,27 @@ public class Bounce : MonoBehaviour
 			//death code
 			else if(brickTag == death)
 			{
-				if(playerLives != 0)
+				if(debugBool == false)
 				{
-					CheckInteraction(ballSide);
-					
-					if(debugBool == false)
+					if(playerLives > 0)
 					{
+						//display life lost text and start the scene over, with one less life, etc
+//						CheckInteraction(ballSide);
+						StopMoving();
+						velocity.y = ZERO;
 						playerLives--;
-						Application.LoadLevel(nextLevel);
+						Application.LoadLevel(currentLevel);
+					}
+					else
+					{
+						Application.LoadLevel("lose_screen");
+						playerLives = 5; 
 					}
 				}
 				else
 				{
-					//don't do this while debugging. It makes it too hard to debug other changes. lol.
-					if(debugBool == false)
-					{
-						Application.LoadLevel("lose_screen");
-						playerLives = 5;
-					}
-
+					CheckInteraction(ballSide);
 				}
-				//display life lost text and start the scene over, with one less life, etc
 			}
 			// if the brickTag and the ballColor aren't the same, bounce off, but don't destroy the brick.
 			else
