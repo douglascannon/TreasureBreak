@@ -11,9 +11,9 @@ public class WinScreen : MonoBehaviour {
 	
 	public void ButtonPress()
 	{
-		ChangeNextLevel(); //increment to the next level before you load it.
+		ChangeNextLevel(); // Increment currentLevel before you load it.
 	
-		Application.LoadLevel(Bounce.currentLevel); //next level has been incrememted, now load it.
+		Application.LoadLevel(Bounce.currentLevel); // currentLevel has been incrememted, now load it.
 	}
 	
 	public static void ChangeNextLevel()

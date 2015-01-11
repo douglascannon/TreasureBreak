@@ -8,30 +8,48 @@ public class Bounce : MonoBehaviour
 
 	const float ZERO = 0f;
 	public Vector2 velocity;
-	public static string ballColor; //make sure this is lowercase, same as the brick's tag
+	public static string ballColor; // Make sure this is lowercase, same as the brick's tag
 	public Button RightButton;
 	public Button LeftButton;	
 	public float initialYVelocity;
 	public float initialXVelocity;
 	public int brickCount;
 	public int treasureBrickCount;
-	public float xRecoil = 0.15f; //this is the distance the ball recoils
+	public float xRecoil = 0.15f; // This is the distance the ball recoils (left or right)
 	public bool hitBrick = false;
 	public bool hitBounds = false;
 	public string brickTag;
-	public Transform upLineStart, upLineEnd;
-	public Transform downLineStart, downLineEnd;
-	public Transform leftLineStart, leftLineEnd;
-	public Transform rightLineStart, rightLineEnd;
-	//more to fix bug -- didn't work. Not currently using these:
+	
+	// Linecasts:
+	public Transform up1Start, up1End;
+	public Transform up2Start, up2End;
+	public Transform up3Start, up3End;
+	public Transform up4Start, up4End;
+	public Transform up5Start, up5End;
+	public Transform down1Start, down1End;
+	public Transform down2Start, down2End;
+	public Transform down3Start, down3End;
+	public Transform down4Start, down4End;
+	public Transform down5Start, down5End;
+	public Transform left1Start, left1End;
+	public Transform left2Start, left2End;
+	public Transform left3Start, left3End;
+	public Transform right1Start, right1End;
+	public Transform right2Start, right2End;
+	public Transform right3Start, right3End;
+	
+	/*
+	// I added more to fix a bug -- didn't work. Not currently using these:
 	public Transform upLeftLineStart, upLeftLineEnd;
 	public Transform upRightLineStart, upRightLineEnd;
 	public Transform downLeftLineStart, downLeftLineEnd;
 	public Transform downRightLineStart, downRightLineEnd;
+	*/
+	
 	RaycastHit2D whatIHit;
 	
 	public bool dougctest = true;
-	//here are the special brick tags:
+	// Special brick tags:
 	const string redChange = "redchange";
 	const string blueChange = "bluechange";
 	const string greenChange = "greenchange";
@@ -70,7 +88,7 @@ public class Bounce : MonoBehaviour
 		{
 			print (brickCount);
 			print (treasureBrickCount);
-		} 
+		}
 	}
 
 	void FixedUpdate()
@@ -84,18 +102,29 @@ public class Bounce : MonoBehaviour
 		}
 	}
 	
+	void Awake() 
+	{
+		Application.targetFrameRate = 150;
+	}
+	
 	void RayCasting()
 	{
-		LineCastCheck(upLineStart, upLineEnd, "up");
-		LineCastCheck(downLineStart, downLineEnd, "down");
-		LineCastCheck(leftLineStart, leftLineEnd, "left");
-		LineCastCheck(rightLineStart, rightLineEnd, "right");
-		//more to fix bug?
-		LineCastCheck(upLeftLineStart, upLeftLineEnd, "up");
-		LineCastCheck(upRightLineStart, upRightLineEnd, "up");
-		LineCastCheck(downLeftLineStart, downLeftLineEnd, "down");
-		LineCastCheck(downRightLineStart, downRightLineEnd, "down");
-		//These need to be fixed^^^
+		LineCastCheck(up1Start, up1End, "up");
+		LineCastCheck(up2Start, up2End, "up");
+		LineCastCheck(up3Start, up3End, "up");
+		LineCastCheck(up4Start, up4End, "up");
+		LineCastCheck(up5Start, up5End, "up");
+		LineCastCheck(down1Start, down1End, "down");
+		LineCastCheck(down2Start, down2End, "down");
+		LineCastCheck(down3Start, down3End, "down");
+		LineCastCheck(down4Start, down4End, "down");
+		LineCastCheck(down5Start, down5End, "down");
+		LineCastCheck(left1Start, left1End, "left");
+		LineCastCheck(left2Start, left2End, "left");
+		LineCastCheck(left3Start, left3End, "left");
+		LineCastCheck(right1Start, right1End, "right");
+		LineCastCheck(right2Start, right2End, "right");
+		LineCastCheck(right3Start, right3End, "right");
 	}
 	
 	void LineCastCheck(Transform lineStart, Transform lineEnd, string ballSide)
@@ -104,7 +133,8 @@ public class Bounce : MonoBehaviour
 
 		// This seems to fix the initial ball bug where it goes through bricks for a while.
 		// Why does this fix it?
-		if (dougctest == true) {
+		if (dougctest == true) 
+		{
 			hitBrick = true;
 			dougctest = false;
 		}
@@ -156,7 +186,7 @@ public class Bounce : MonoBehaviour
 			{
 				ballColor = "blue";
 				SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-				renderer.color = new Color(0.4f, 0.7f, 1f);
+				renderer.color = new Color(0f, 0.49f, 1f);
 				CheckInteraction(ballSide);
 			}
 			//greenchange code
@@ -237,7 +267,7 @@ public class Bounce : MonoBehaviour
 					else
 					{
 						Application.LoadLevel("lose_screen");
-						playerLives = 5; 
+//						playerLives = 5; 
 					}
 				}
 				else
@@ -271,6 +301,7 @@ public class Bounce : MonoBehaviour
 			Vector2 newPosition = new Vector2(transform.position.x - xRecoil, transform.position.y);
 			transform.position = newPosition;
 		}
+		/*
 		if(ballSide == "upLeft" || ballSide == "downLeft")
 		{
 			ChangeYVelocity();
@@ -283,6 +314,7 @@ public class Bounce : MonoBehaviour
 			Vector2 newPosition = new Vector2(transform.position.x - xRecoil, transform.position.y);
 			transform.position = newPosition;
 		}
+		*/
 	}
 	
 	void IfHitBounds(string side)
@@ -335,6 +367,12 @@ public class Bounce : MonoBehaviour
 		else MoveRight();
 	}
 	
+	public void RightButtonPress()
+	{
+		if(switchBool == false) MoveRight ();
+		else MoveLeft();
+	}
+	
 	public void MoveLeft()
 	{
 		if(Input.touchCount > 1)
@@ -353,12 +391,6 @@ public class Bounce : MonoBehaviour
 				velocity.x = -initialXVelocity;
 			}
 		}
-	}
-	
-	public void RightButtonPress()
-	{
-		if(switchBool == false) MoveRight ();
-		else MoveLeft();
 	}
 	
 	public void MoveRight()
@@ -383,14 +415,8 @@ public class Bounce : MonoBehaviour
 	
 	void SwitchDirections()
 	{
-		if(switchBool == true) 
-		{
-			switchBool = false;
-		}
-		else
-		{
-			switchBool = true;
-		} 
+		if(switchBool == true) switchBool = false;
+		else switchBool = true;
 	}
 
 	void StopMoving()

@@ -11,6 +11,6 @@ public class LoseScreen : MonoBehaviour {
 	
 	public void ButtonPress()
 	{
-		Application.LoadLevel(Bounce.currentLevel); //this doesn't increment nextLevel, because they'll have to do the same one over again.
+		Application.LoadLevel(Bounce.currentLevel); // This doesn't increment currentLevel, because they'll have to do the same one over again.
 	}
 }
